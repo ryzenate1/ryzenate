@@ -1,42 +1,45 @@
-'use client';
-
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useSpring, useTransform, useMotionValue, MotionValue, SpringOptions } from 'framer-motion';
+import { motion, useSpring, useTransform, MotionValue } from 'framer-motion';
 import { useCursor } from '../../context/CursorContext';
 
 // Helper function to create smooth spring motion values
 function useSmoothTransform(
   value: MotionValue<number>,
-  springOptions: SpringOptions,
-  transformer: (v: number) => number = (v) => v
+  springOptions: any, // Adjust type as needed for SpringOptions
+  transformer?: (v: number) => number
 ) {
-  return useSpring(useTransform(value, transformer), springOptions);
+  return useSpring(useTransform(value, transformer || (v => v)), springOptions);
 }
 
-const CustomCursor: React.FC = () => {
+// Declare MotionValue instances outside the component to ensure stable references
+const immediateX = new MotionValue(0);
+const immediateY = new MotionValue(0);
+const borderRadiusValue = new MotionValue(50);
+
+const CustomCursor = () => {
   const { isTargeted, targetRect } = useCursor();
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
+  const springConfig = { stiffness: 400, damping: 30, mass: 1 };
+
   const [isMobile, setIsMobile] = useState(false);
 
-  const springConfig: SpringOptions = { stiffness: 400, damping: 30, mass: 1 };
-
-  // Moved useMotionValue calls inside the component
-  const immediateX = useMotionValue(0);
-  const immediateY = useMotionValue(0);
-  const borderRadiusValue = useMotionValue(50);
-
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   const mouseX = useRef(0);
   const mouseY = useRef(0);
 
+  // Use the externally declared MotionValue instances
   const smoothX = useSmoothTransform(immediateX, springConfig);
   const smoothY = useSmoothTransform(immediateY, springConfig);
 
@@ -44,7 +47,10 @@ const CustomCursor: React.FC = () => {
   const targetHeight = useSpring(10, springConfig);
   const targetX = useSpring(0, springConfig);
   const targetY = useSpring(0, springConfig);
+
+  // Use the externally declared MotionValue instance
   const borderRadius = useSmoothTransform(borderRadiusValue, springConfig);
+
   const borderWidth = useSpring(2, springConfig);
 
   useEffect(() => {
@@ -56,7 +62,9 @@ const CustomCursor: React.FC = () => {
         immediateY.set(e.clientY);
       };
       window.addEventListener('mousemove', handleMouseMove);
-      return () => window.removeEventListener('mousemove', handleMouseMove);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+      };
     }
   }, [isMobile]);
 
@@ -67,22 +75,26 @@ const CustomCursor: React.FC = () => {
         targetHeight.set(targetRect.height + 8);
         targetX.set(targetRect.left - 4);
         targetY.set(targetRect.top - 4);
-        borderRadiusValue.set(4);
+        borderRadiusValue.set(4); // small radius for box shape
         borderWidth.set(2);
       } else {
         targetWidth.set(48);
         targetHeight.set(48);
         targetX.set(smoothX.get() - 24);
         targetY.set(smoothY.get() - 24);
-        borderRadiusValue.set(50);
+        borderRadiusValue.set(50); // back to circular
         borderWidth.set(2);
       }
 
-      const unsubscribeX = smoothX.on('change', (latest) => {
-        if (!isTargeted) targetX.set(latest - 24);
+      const unsubscribeX = smoothX.on("change", (latest) => {
+        if (!isTargeted) {
+          targetX.set(latest - 24);
+        }
       });
-      const unsubscribeY = smoothY.on('change', (latest) => {
-        if (!isTargeted) targetY.set(latest - 24);
+      const unsubscribeY = smoothY.on("change", (latest) => {
+        if (!isTargeted) {
+          targetY.set(latest - 24);
+        }
       });
 
       return () => {
@@ -90,10 +102,10 @@ const CustomCursor: React.FC = () => {
         unsubscribeY();
       };
     }
-  }, [isTargeted, targetRect, isMobile, smoothX, smoothY, targetX, targetY, targetWidth, targetHeight, borderWidth]);
+  }, [isTargeted, targetRect, isMobile, smoothX, smoothY, targetWidth, targetHeight, targetX, targetY, borderWidth]);
 
-  const dotX = useTransform(smoothX, (v) => v - 4);
-  const dotY = useTransform(smoothY, (v) => v - 4);
+  const dotX = useTransform(smoothX, val => val - 4);
+  const dotY = useTransform(smoothY, val => val - 4);
 
   return (
     <>
@@ -111,7 +123,7 @@ const CustomCursor: React.FC = () => {
               borderRadius: borderRadius,
               borderWidth: borderWidth,
               opacity: isTargeted ? 1 : 0.3,
-              borderStyle: 'solid',
+              borderStyle: 'solid', // Make sure border is visible
             }}
             transition={springConfig}
           />

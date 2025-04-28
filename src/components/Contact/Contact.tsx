@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
-import SectionTitle from '../Common/SectionTitle'; 
+// Changed import to import all icons
+import * as FaIcons from 'react-icons/fa';
+import SectionTitle from '../Common/SectionTitle';
 
 interface ContactProps {
   id: string;
@@ -12,20 +13,20 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
   const emailAddress = "ryzenate72@gmail.com";
 
   return (
-    <section 
+    <section
       id={id}
       data-scroll-section
       className="py-24 px-6 bg-[#0d1117] relative overflow-hidden"
     >
       {/* Animated Section */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
         viewport={{ once: true }}
         className="max-w-4xl mx-auto text-center"
       >
-        <SectionTitle 
+        <SectionTitle
           label="CONTACT"
           title="Got a problem to solve? Or have a request?"
           subtitle="Get your space suit ready and tell us your ideas to develop your dream web solution."
@@ -43,7 +44,8 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
               transition={{ repeat: Infinity, duration: 2 }}
               className="p-3 rounded-full bg-blue-500/20"
             >
-              <span className="text-blue-400 text-2xl"><FaPhoneAlt /></span>{/* Wrapped icon in span */}
+              {/* Updated usage */}
+              <FaIcons.FaPhoneAlt className="text-blue-400 text-2xl" />
             </motion.div>
             <span className="text-neutral-200 font-semibold text-lg">{phoneNumber}</span>
 
@@ -62,7 +64,8 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
               transition={{ repeat: Infinity, duration: 2 }}
               className="p-3 rounded-full bg-blue-500/20"
             >
-              <span className="text-blue-400 text-2xl"><FaEnvelope /></span>{/* Wrapped icon in span */}
+              {/* Updated usage */}
+              <FaIcons.FaEnvelope className="text-blue-400 text-2xl" />
             </motion.div>
             <span className="text-neutral-200 font-semibold text-lg">{emailAddress}</span>
 
@@ -73,12 +76,12 @@ const Contact: React.FC<ContactProps> = ({ id }) => {
       </motion.div>
 
       {/* Decorative Circles Background */}
-      <motion.div 
+      <motion.div
         className="absolute top-[-100px] left-[-100px] w-[300px] h-[300px] bg-blue-500/20 rounded-full blur-3xl"
         animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
         transition={{ repeat: Infinity, duration: 8 }}
       />
-      <motion.div 
+      <motion.div
         className="absolute bottom-[-120px] right-[-120px] w-[300px] h-[300px] bg-purple-500/20 rounded-full blur-3xl"
         animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
         transition={{ repeat: Infinity, duration: 10 }}

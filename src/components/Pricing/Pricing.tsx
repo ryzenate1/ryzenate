@@ -70,7 +70,10 @@ const PrevArrow = (props: any) => {
       style={{ ...style, display: "block" }} // Pass style from slick
       onClick={onClick} // Pass onClick from slick
     >
-      <span className="text-white/70 hover:text-white z-10 cursor-pointer" style={{ width: '28px', height: '28px' }}><FaArrowLeft /></span>{/* Wrapped icon in span */}
+      <FaArrowLeft
+        className="text-white/70 hover:text-white z-10 cursor-pointer"
+        style={{ width: '28px', height: '28px' }} // Icon styling
+      />
 
     </div>
   );
@@ -84,7 +87,10 @@ const NextArrow = (props: any) => {
       style={{ ...style, display: "block" }}
       onClick={onClick}
     >
-       <span className="text-white/70 hover:text-white z-10 cursor-pointer" style={{ width: '28px', height: '28px' }}><FaArrowRight /></span>{/* Wrapped icon in span */}
+      <FaArrowRight
+        className="text-white/70 hover:text-white z-10 cursor-pointer"
+        style={{ width: '28px', height: '28px' }} // Icon styling
+      />
 
     </div>
   );
@@ -237,7 +243,7 @@ const Pricing: React.FC<{ id: string }> = ({ id }) => {
           {plans.map((plan, index) => (
             // Container for each slide card
             <div key={index} className="p-2 h-full">
-              {/* Pass the openModal function */} {/* Corrected prop name */}
+              {/* Pass the openModal function */}
               <PricingPlan {...plan} onGetStartedClick={openModal} />
             </div>
           ))}

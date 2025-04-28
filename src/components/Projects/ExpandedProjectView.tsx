@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaLink, FaGithub } from 'react-icons/fa';
-import { Project } from '../types/project';
+import { Project } from '../types/project'; // Corrected import path
 
 interface ExpandedProjectViewProps {
   project: Project | null;
@@ -11,6 +11,7 @@ interface ExpandedProjectViewProps {
 
 const ExpandedProjectView: React.FC<ExpandedProjectViewProps> = ({ project, onClose, layoutId }) => {
 
+  // Define variants within the component scope
   const backdropVariants = {
       hidden: { opacity: 0 },
       visible: { opacity: 1 },
@@ -37,14 +38,16 @@ const ExpandedProjectView: React.FC<ExpandedProjectViewProps> = ({ project, onCl
                     exit={{ scale: 0.8, opacity: 0 }}
                     transition={{ type: 'spring', damping: 20, stiffness: 150 }}
                 >
+                    {/* Close button defined directly */}
                     <button 
                       onClick={onClose} 
                       className="absolute top-3 right-3 text-neutral-400 hover:text-white transition-colors z-10 p-1 bg-neutral-800/50 rounded-full"
                       aria-label="Close project details"
                     >
-                      <span><FaTimes size={20} /></span>{/* Wrapped icon in span */}
+                      <FaTimes size={20} />
                     </button>
 
+                    {/* Content */}
                     <motion.img 
                       layoutId={`image-${layoutId}`} 
                       src={project.imageUrl} 
@@ -62,7 +65,7 @@ const ExpandedProjectView: React.FC<ExpandedProjectViewProps> = ({ project, onCl
                            layoutId={`tags-${layoutId}`} 
                            className="flex flex-wrap gap-2 mb-4"
                          >
-                           {project.tech.map((tech: string) => (
+                           {project.tech.map((tech: string) => ( // Added type annotation
                              <span key={tech} className="text-xs bg-neutral-700 text-neutral-300 px-2 py-1 rounded-full">{tech}</span>
                            ))}
                          </motion.div>
@@ -70,6 +73,7 @@ const ExpandedProjectView: React.FC<ExpandedProjectViewProps> = ({ project, onCl
                             {project.description} 
                         </p>
                     </div>
+                    {/* Links section */}
                     <motion.div 
                         initial={{ opacity: 0 }} 
                         animate={{ opacity: 1 }} 
@@ -78,12 +82,12 @@ const ExpandedProjectView: React.FC<ExpandedProjectViewProps> = ({ project, onCl
                         >
                         {project.liveUrl && project.liveUrl !== "#" && (
                             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" title="Live Demo/Site" className="text-neutral-400 hover:text-blue-400 transition-colors">
-                            <span><FaLink size={20} /></span>{/* Wrapped icon in span */}
+                            <FaLink size={20} />
                             </a>
                         )}
                         {project.repoUrl && project.repoUrl !== "#" && (
                             <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" title="GitHub Repo" className="text-neutral-400 hover:text-white transition-colors">
-                            <span><FaGithub size={20} /></span>{/* Wrapped icon in span */}
+                            <FaGithub size={20} />
                             </a>
                         )}
                     </motion.div>
