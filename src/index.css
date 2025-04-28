@@ -1,0 +1,240 @@
+/* --- FONT IMPORTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Borel&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,800;0,900;1,300&display=swap');
+
+/* --- TAILWIND DIRECTIVES --- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- GLOBAL STYLES --- */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  @apply bg-[#0d1117] text-[#c9d1d9];
+  cursor: none;
+}
+
+* {
+  cursor: none;
+}
+
+/* Locomotive Scroll Fix */
+html.has-scroll-smooth, html.has-scroll-smooth body {
+  overflow: hidden;
+}
+
+/* Enable cursor for clickable elements if needed */
+button, a, input, textarea, [role="button"], [onclick] {
+  cursor: none;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes gradient-flow {
+  0% { background-position: -100% -100%; } /* Start further off-screen */
+  50% { background-position: 200% 200%; } /* Move further across */
+  100% { background-position: -100% -100%; } /* Return */
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --- TEXT EFFECTS --- */
+.text-glow-white {
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+}
+
+.animate-fadein {
+  animation: fadein 1s ease forwards;
+}
+
+.glitch {
+  animation: glitch 0.3s infinite;
+  color: #39ff14;
+  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+}
+
+/* --- TERMINAL STYLES --- */
+.mac-terminal {
+  @apply bg-[#1e1e1e] rounded-lg shadow-2xl border border-neutral-700 overflow-hidden;
+}
+
+.mac-terminal-header {
+  @apply bg-neutral-700 px-3 py-2 flex items-center gap-2 border-b border-neutral-600;
+}
+
+.mac-terminal-dot {
+  @apply w-3 h-3 rounded-full;
+}
+
+.mac-terminal-body {
+  @apply p-4 h-96 overflow-y-auto text-sm font-mono text-neutral-200 whitespace-pre-wrap;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.mac-terminal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.mac-terminal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.mac-terminal-body::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* --- NAVBAR --- */
+.nav-link {
+  @apply text-[#c9d1d9] hover:text-[#58a6ff] px-3 py-1 transition-colors duration-200;
+}
+
+/* --- LANDING TEXT --- */
+.title-text {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  color: #c9d1d9;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  position: relative;
+  transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.title-text::before {
+  content: none;
+}
+
+/* --- TERMINAL OUTPUT --- */
+.terminal-output-text {
+  font-family: "JetBrains Mono", monospace;
+  color: #79c0ff;
+}
+
+/* --- CURSOR BLINK --- */
+.terminal-cursor {
+  background-color: #79c0ff;
+  color: #79c0ff;
+  @apply inline-block align-middle w-[10px] h-[1.2em] ml-[2px];
+  animation: blink-cursor 1s infinite step-end;
+}
+
+/* --- LINKS --- */
+.text-link {
+  color: #58a6ff;
+  @apply hover:underline;
+}
+
+.text-muted {
+  color: #8b949e;
+}
+
+/* --- CUSTOM COMPONENTS LAYER --- */
+@layer components {
+  
+  /* Glass Container Style without flowy animation */
+  .glass-container {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-lg relative overflow-hidden; 
+  }
+
+  /* Removed ::before pseudo-element rule */
+
+  /* Hide Scrollbar Utility */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Section Divider */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(57, 255, 20, 0.4), transparent);
+  }
+
+  /* Hacker Fonts for Skills */
+  .skill-name-hacker-font {
+    font-family: 'JetBrains Mono', monospace;
+    color: #39ff14;
+  }
+
+  .skill-popup-text {
+    font-family: 'JetBrains Mono', monospace;
+    color: #39ff14;
+  }
+
+  /* Slick Carousel Fixes */
+  .slick-track-equal-height .slick-track {
+    @apply flex !important;
+  }
+  
+  .slick-track-equal-height .slick-slide {
+    @apply h-auto !important;
+  }
+  
+  .slick-track-equal-height .slick-slide > div {
+    @apply h-full !important;
+  }
+
+  .slick-dots li button:before {
+    @apply text-gray-400 text-xs opacity-75 !important;
+  }
+
+  .slick-dots li.slick-active button:before {
+    @apply text-blue-500 opacity-100 !important;
+  }
+
+  .slick-track-equal-height .slick-prev,
+  .slick-track-equal-height .slick-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  .slick-track-equal-height .slick-prev {
+    left: -40px;
+  }
+
+  .slick-track-equal-height .slick-next {
+    right: -40px;
+  }
+
+  .slick-track-equal-height .slick-prev:before,
+  .slick-track-equal-height .slick-next:before {
+    content: none !important;
+  }
+}
